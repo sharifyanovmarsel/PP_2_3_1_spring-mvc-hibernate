@@ -1,6 +1,7 @@
 package web.controllers;
 
 import web.dao.PersonDAO;
+import web.dao.UserDAO;
 import web.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,21 +16,23 @@ import javax.validation.Valid;
 public class PeopleController {
 
     private final PersonDAO personDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
+    public PeopleController(PersonDAO personDAO, UserDAO userDAO) {
         this.personDAO = personDAO;
+        this.userDAO = userDAO;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", personDAO.index());
+        model.addAttribute("people", userDAO.getUsersList());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", personDAO.show(id));
+        model.addAttribute("user", userDAO.show(id));
         return "people/show";
     }
 
@@ -43,13 +46,13 @@ public class PeopleController {
         if (bindingResult.hasErrors()) {
             return "people/new";
         }
-        personDAO.save(user);
+        userDAO.save(user);
         return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", personDAO.show(id));
+        model.addAttribute("user", userDAO.show(id));
         return "people/edit";
     }
 
@@ -60,14 +63,14 @@ public class PeopleController {
         if (bindingResult.hasErrors()) {
             return "people/edit";
         }
-        personDAO.update(id, user);
+        userDAO.update(id, user);
         System.out.println(user);
         return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        userDAO.delete(id);
         return "redirect:/";
     }
 }

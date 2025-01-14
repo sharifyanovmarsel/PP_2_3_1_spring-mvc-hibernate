@@ -1,4 +1,4 @@
-package com.sharifyanov.springcourse.models;
+package web.models;
 
 
 import javax.validation.constraints.Email;
@@ -6,7 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 
-public class Person {
+public class User {
     private int id;
 
     @NotEmpty(message = "name should not be empty")
@@ -20,11 +20,11 @@ public class Person {
     @Email(message = "Email should be valid")
     private String email;
 
-    public Person() {
+    public User() {
 
     }
 
-    public Person(int id, String name, int age, String email) {
+    public User(int id, String name, int age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -61,5 +61,15 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

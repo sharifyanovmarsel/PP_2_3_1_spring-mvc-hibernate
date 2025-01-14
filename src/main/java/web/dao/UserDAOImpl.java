@@ -1,18 +1,15 @@
 package web.dao;
 
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Component;
-import web.config.AppConfig;
 import web.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
-public class UserDAO {
+public class UserDAOImpl{
     @PersistenceContext
     private EntityManager entityManager;
 

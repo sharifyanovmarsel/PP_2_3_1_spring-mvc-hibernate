@@ -1,5 +1,7 @@
 package web.controllers;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import web.dao.UserDAO;
 import web.dao.UserDAOImpl;
 import web.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,10 @@ import javax.validation.Valid;
 @Controller
 public class UsersController {
 
-    private final UserDAOImpl userDAOImpl;
+    private final UserDAO userDAOImpl;
 
     @Autowired
-    public UsersController(UserDAOImpl userDAOImpl) {
+    public UsersController(UserDAO userDAOImpl) {
         this.userDAOImpl = userDAOImpl;
     }
 
@@ -26,8 +28,8 @@ public class UsersController {
         return "people/index";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    @GetMapping("/show")
+    public String show(@RequestParam("id") int id, Model model) {
         model.addAttribute("user", userDAOImpl.show(id));
         return "people/show";
     }
@@ -46,16 +48,16 @@ public class UsersController {
         return "redirect:/";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    @GetMapping("/edit")
+    public String edit(Model model, @RequestParam("id") int id) {
         model.addAttribute("user", userDAOImpl.show(id));
         return "people/edit";
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @RequestParam("id") int id) {
         if (bindingResult.hasErrors()) {
             return "people/edit";
         }
@@ -64,8 +66,8 @@ public class UsersController {
         return "redirect:/";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @DeleteMapping("/delete")
+    public String delete(@RequestParam("id") int id) {
         userDAOImpl.delete(id);
         return "redirect:/";
     }
